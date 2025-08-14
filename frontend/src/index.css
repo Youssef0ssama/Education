@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Ensure colors work */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Test class to verify Tailwind is working */
+.test-color {
+  background-color: #3b82f6;
+  color: white;
+}
