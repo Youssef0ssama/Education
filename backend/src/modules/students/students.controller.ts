@@ -170,4 +170,80 @@ export class StudentsController {
       assignmentType,
     });
   }
+
+  @Get('schedule')
+  @ApiOperation({ summary: "Get student's schedule" })
+  @ApiQuery({ name: 'start_date', required: false, description: 'Start date filter' })
+  @ApiQuery({ name: 'end_date', required: false, description: 'End date filter' })
+  @ApiResponse({
+    status: 200,
+    description: 'Schedule retrieved successfully',
+  })
+  async getSchedule(
+    @CurrentUser('id') studentId: number,
+    @Query('start_date') startDate?: string,
+    @Query('end_date') endDate?: string,
+  ) {
+    return this.studentsService.getSchedule(studentId, { startDate, endDate });
+  }
+
+  @Get('enrolled-courses')
+  @ApiOperation({ summary: "Get student's enrolled courses (alias)" })
+  @ApiResponse({
+    status: 200,
+    description: 'Enrolled courses retrieved successfully',
+  })
+  async getEnrolledCourses(@CurrentUser('id') studentId: number) {
+    const courses = await this.studentsService.getEnrolledCourses(studentId, EnrollmentStatus.ACTIVE);
+    return { courses };
+  }
+
+  @Get('waitlist')
+  @ApiOperation({ summary: "Get student's waitlisted courses" })
+  @ApiResponse({
+    status: 200,
+    description: 'Waitlisted courses retrieved successfully',
+  })
+  async getWaitlist(@CurrentUser('id') studentId: number) {
+    return this.studentsService.getWaitlist(studentId);
+  }
+
+  @Post('courses/:courseId/enroll')
+  @ApiOperation({ summary: 'Enroll in a specific course (alternative endpoint)' })
+  @ApiResponse({
+    status: 201,
+    description: 'Successfully enrolled in course',
+  })
+  async enrollInSpecificCourse(
+    @CurrentUser('id') studentId: number,
+    @Param('courseId') courseId: string,
+  ) {
+    return this.studentsService.enrollInCourse(studentId, +courseId);
+  }
+
+  @Post('courses/:courseId/drop')
+  @ApiOperation({ summary: 'Drop from a specific course' })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully dropped from course',
+  })
+  async dropFromCourse(
+    @CurrentUser('id') studentId: number,
+    @Param('courseId') courseId: string,
+  ) {
+    return this.studentsService.dropFromCourse(studentId, +courseId);
+  }
+
+  @Get('courses/:courseId')
+  @ApiOperation({ summary: 'Get specific course details for student' })
+  @ApiResponse({
+    status: 200,
+    description: 'Course details retrieved successfully',
+  })
+  async getCourseDetails(
+    @CurrentUser('id') studentId: number,
+    @Param('courseId') courseId: string,
+  ) {
+    return this.studentsService.getCourseDetails(studentId, +courseId);
+  }
 }

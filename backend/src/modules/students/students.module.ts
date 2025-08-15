@@ -7,9 +7,10 @@ import { Course } from '../courses/entities/course.entity';
 import { User } from '../users/entities/user.entity';
 import { Assignment } from '../assignments/entities/assignment.entity';
 import { Submission } from '../assignments/entities/submission.entity';
+import { ClassSession } from '../sessions/entities/class-session.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Enrollment, Course, User, Assignment, Submission])],
+  imports: [TypeOrmModule.forFeature([Enrollment, Course, User, Assignment, Submission, ClassSession])],
   controllers: [StudentsController],
   providers: [StudentsService],
   exports: [StudentsService],

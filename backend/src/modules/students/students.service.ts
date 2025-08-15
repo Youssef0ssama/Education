@@ -6,6 +6,7 @@ import { Course } from '../courses/entities/course.entity';
 import { User } from '../users/entities/user.entity';
 import { Assignment } from '../assignments/entities/assignment.entity';
 import { Submission } from '../assignments/entities/submission.entity';
+import { ClassSession } from '../sessions/entities/class-session.entity';
 import { EnrollmentStatus } from '../../common/enums/enrollment-status.enum';
 
 @Injectable()
@@ -21,6 +22,8 @@ export class StudentsService {
     private readonly assignmentRepository: Repository<Assignment>,
     @InjectRepository(Submission)
     private readonly submissionRepository: Repository<Submission>,
+    @InjectRepository(ClassSession)
+    private readonly sessionRepository: Repository<ClassSession>,
   ) {}
 
   async getEnrolledCourses(studentId: number, status: EnrollmentStatus = EnrollmentStatus.ACTIVE) {
@@ -267,6 +270,87 @@ export class StudentsService {
     return {
       grades,
       statistics: stats,
+    };
+  }
+
+  async getSchedule(studentId: number, filters: any = {}) {
+    const { startDate, endDate } = filters;
+    
+    let queryBuilder = this.sessionRepository
+      .createQueryBuilder('session')
+      .leftJoinAndSelect('session.course', 'course')
+      .leftJoin('course.enrollments', 'enrollment')
+      .where('enrollment.studentId = :studentId AND enrollment.status = :status', {
+        studentId,
+        status: EnrollmentStatus.ACTIVE,
+      });
+
+    if (startDate) {
+      queryBuilder.andWhere('session.scheduledStart >= :startDate', { startDate: new Date(startDate) });
+    }
+
+    if (endDate) {
+      queryBuilder.andWhere('session.scheduledStart <= :endDate', { endDate: new Date(endDate) });
+    }
+
+    const sessions = await queryBuilder
+      .orderBy('session.scheduledStart', 'ASC')
+      .getMany();
+
+    return { sessions };
+  }
+
+  async getWaitlist(studentId: number) {
+    // For now, return empty waitlist - this would be implemented based on business logic
+    return { waitlist: [] };
+  }
+
+  async dropFromCourse(studentId: number, courseId: number) {
+    const enrollment = await this.enrollmentRepository.findOne({
+      where: { studentId, courseId, status: EnrollmentStatus.ACTIVE },
+    });
+
+    if (!enrollment) {
+      throw new NotFoundException('Active enrollment not found for this course');
+    }
+
+    enrollment.status = EnrollmentStatus.DROPPED;
+    await this.enrollmentRepository.save(enrollment);
+
+    return {
+      message: 'Successfully dropped from course',
+      enrollment,
+    };
+  }
+
+  async getCourseDetails(studentId: number, courseId: number) {
+    const enrollment = await this.enrollmentRepository.findOne({
+      where: { studentId, courseId },
+      relations: ['course', 'course.instructor', 'course.assignments', 'course.sessions'],
+    });
+
+    if (!enrollment) {
+      throw new NotFoundException('You are not enrolled in this course');
+    }
+
+    // Get student's submissions for this course
+    const submissions = await this.submissionRepository.find({
+      where: { 
+        studentId,
+        assignment: { courseId },
+      },
+      relations: ['assignment'],
+    });
+
+    return {
+      course: enrollment.course,
+      enrollment: {
+        enrollmentDate: enrollment.enrollmentDate,
+        status: enrollment.status,
+        progressPercentage: enrollment.progressPercentage,
+        finalGrade: enrollment.finalGrade,
+      },
+      submissions,
     };
   }
 }
