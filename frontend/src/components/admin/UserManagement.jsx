@@ -12,7 +12,12 @@ const UserManagement = ({ user }) => {
     page: 1,
     limit: 10
   });
-  const [pagination, setPagination] = useState({});
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 10,
+    total: 0,
+    pages: 0
+  });
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -294,13 +299,16 @@ const UserManagement = ({ user }) => {
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {userItem.last_login 
-                          ? format(new Date(userItem.last_login), 'MMM dd, yyyy')
+                        {userItem.last_login || userItem.lastLogin
+                          ? format(new Date(userItem.last_login || userItem.lastLogin), 'MMM dd, yyyy')
                           : 'Never'
                         }
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {format(new Date(userItem.created_at), 'MMM dd, yyyy')}
+                        {userItem.created_at || userItem.createdAt
+                          ? format(new Date(userItem.created_at || userItem.createdAt), 'MMM dd, yyyy')
+                          : 'Unknown'
+                        }
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div className="flex items-center space-x-2">
@@ -338,7 +346,7 @@ const UserManagement = ({ user }) => {
             </div>
 
             {/* Pagination */}
-            {pagination.pages > 1 && (
+            {pagination && pagination.pages > 1 && (
               <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200">
                 <div className="flex-1 flex justify-between sm:hidden">
                   <button
@@ -349,8 +357,8 @@ const UserManagement = ({ user }) => {
                     Previous
                   </button>
                   <button
-                    onClick={() => setFilters({ ...filters, page: Math.min(pagination.pages, filters.page + 1) })}
-                    disabled={filters.page === pagination.pages}
+                    onClick={() => setFilters({ ...filters, page: Math.min(pagination?.pages || 1, filters.page + 1) })}
+                    disabled={filters.page === (pagination?.pages || 1)}
                     className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
                   >
                     Next
@@ -361,14 +369,14 @@ const UserManagement = ({ user }) => {
                     <p className="text-sm text-gray-700">
                       Showing <span className="font-medium">{((filters.page - 1) * filters.limit) + 1}</span> to{' '}
                       <span className="font-medium">
-                        {Math.min(filters.page * filters.limit, pagination.total)}
+                        {Math.min(filters.page * filters.limit, pagination?.total || 0)}
                       </span> of{' '}
-                      <span className="font-medium">{pagination.total}</span> results
+                      <span className="font-medium">{pagination?.total || 0}</span> results
                     </p>
                   </div>
                   <div>
                     <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
-                      {Array.from({ length: pagination.pages }, (_, i) => i + 1).map((page) => (
+                      {Array.from({ length: pagination?.pages || 0 }, (_, i) => i + 1).map((page) => (
                         <button
                           key={page}
                           onClick={() => setFilters({ ...filters, page })}

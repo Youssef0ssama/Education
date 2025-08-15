@@ -20,7 +20,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
-    "docker:logs": "docker-compose logs -f"
+    "docker:logs": "docker-compose logs -f",
+    "seed": "ts-node -r tsconfig-paths/register src/database/seed.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",

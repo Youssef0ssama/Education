@@ -3,7 +3,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 import { AppModule } from './app.module';
-import { HttpExceptionFilter } from './common/filters/http-exception.filter';
+import { HttpExceptionFilter, AllExceptionsFilter } from './common/filters/http-exception.filter';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 
 async function bootstrap() {
@@ -15,10 +15,17 @@ async function bootstrap() {
 
   // CORS configuration
   app.enableCors({
-    origin: configService.get('CLIENT_URL') || 'http://localhost:3000',
+    origin: [
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'http://127.0.0.1:3000',
+      'http://127.0.0.1:3001',
+      configService.get('CLIENT_URL') || 'http://localhost:3000'
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+    optionsSuccessStatus: 200,
   });
 
   // Global validation pipe
@@ -33,8 +40,8 @@ async function bootstrap() {
     }),
   );
 
-  // Global exception filter
-  app.useGlobalFilters(new HttpExceptionFilter());
+  // Global exception filters
+  app.useGlobalFilters(new AllExceptionsFilter(), new HttpExceptionFilter());
 
   // Global logging interceptor
   app.useGlobalInterceptors(new LoggingInterceptor());

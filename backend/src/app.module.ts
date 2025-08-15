@@ -17,6 +17,7 @@ import { ContentModule } from './modules/content/content.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { HealthModule } from './modules/health/health.module';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 // Import entities
 import { User } from './modules/users/entities/user.entity';
@@ -78,6 +79,7 @@ import { Notification } from './modules/notifications/entities/notification.enti
     AnalyticsModule,
     NotificationsModule,
     HealthModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [AppService],

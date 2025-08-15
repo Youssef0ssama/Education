@@ -154,7 +154,10 @@ const AdminDashboard = ({ user }) => {
                                             <p className="text-sm font-medium text-gray-900">{user.name}</p>
                                             <p className="text-sm text-gray-600">{user.email}</p>
                                             <p className="text-xs text-gray-500">
-                                                {format(new Date(user.created_at), 'MMM dd, yyyy')}
+                                                {user.created_at || user.createdAt
+                                                    ? format(new Date(user.created_at || user.createdAt), 'MMM dd, yyyy')
+                                                    : 'Unknown date'
+                                                }
                                             </p>
                                         </div>
                                         <div className="flex-shrink-0">
@@ -265,7 +268,10 @@ const AdminDashboard = ({ user }) => {
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                {format(new Date(transaction.created_at), 'MMM dd, yyyy')}
+                                                {transaction.created_at || transaction.createdAt
+                                                    ? format(new Date(transaction.created_at || transaction.createdAt), 'MMM dd, yyyy')
+                                                    : 'Unknown date'
+                                                }
                                             </td>
                                         </tr>
                                     ))}
