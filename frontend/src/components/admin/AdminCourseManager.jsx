@@ -169,6 +169,20 @@ const AdminCourseManager = ({ user }) => {
     try {
       console.log('Deleting course:', courseId, courseTitle);
       const token = localStorage.getItem('token');
+      
+      // First, try to fix database constraints if needed
+      try {
+        await fetch('/api/admin/fix-course-constraints', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        console.log('Database constraints checked/fixed');
+      } catch (constraintError) {
+        console.warn('Could not fix constraints (may already be fixed):', constraintError);
+      }
+      
       const response = await fetch(`/api/admin/courses/${courseId}`, {
         method: 'DELETE',
         headers: {
@@ -186,11 +200,19 @@ const AdminCourseManager = ({ user }) => {
       } else {
         const error = await response.json();
         console.error('Delete error response:', error);
-        alert(error.error || 'Failed to delete course');
+        
+        // Provide more helpful error messages
+        if (error.error && error.error.includes('active enrollment')) {
+          alert(`Cannot delete course: ${error.error}\n\nPlease complete or drop all active enrollments first.`);
+        } else if (error.error && error.error.includes('foreign key')) {
+          alert(`Database constraint error. Please contact administrator.\n\nError: ${error.error}`);
+        } else {
+          alert(error.error || 'Failed to delete course');
+        }
       }
     } catch (error) {
       console.error('Delete course error:', error);
-      alert('Failed to delete course');
+      alert('Network error: Failed to delete course. Please check your connection and try again.');
     }
   };
 
@@ -227,6 +249,35 @@ const AdminCourseManager = ({ user }) => {
     }
   };
 
+  const handleFixDatabaseConstraints = async () => {
+    if (!confirm('This will fix database constraints for course deletion. Continue?')) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('/api/admin/fix-course-constraints', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        alert('Database constraints fixed successfully!\n\nCourse deletion should now work properly.');
+        console.log('Database fix result:', result);
+      } else {
+        const error = await response.json();
+        alert(`Failed to fix database constraints: ${error.error}`);
+        console.error('Database fix error:', error);
+      }
+    } catch (error) {
+      console.error('Fix database constraints error:', error);
+      alert('Failed to fix database constraints. Please check the console for details.');
+    }
+  };
+
   const getStatusBadge = (status) => {
     const statusConfig = {
       draft: { color: 'bg-gray-100 text-gray-800', text: 'Draft' },
@@ -250,13 +301,23 @@ const AdminCourseManager = ({ user }) => {
           <h1 className="text-2xl font-bold text-gray-900">Course Management</h1>
           <p className="text-gray-600">Create and manage courses, assign teachers</p>
         </div>
-        <button
-          onClick={() => setShowCreateModal(true)}
-          className="flex items-center space-x-2 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
-        >
-          <Plus className="h-4 w-4" />
-          <span>Create Course</span>
-        </button>
+        <div className="flex space-x-3">
+          <button
+            onClick={handleFixDatabaseConstraints}
+            className="flex items-center space-x-2 px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700"
+            title="Fix database constraints for course deletion"
+          >
+            <span>🔧</span>
+            <span>Fix DB</span>
+          </button>
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="flex items-center space-x-2 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+          >
+            <Plus className="h-4 w-4" />
+            <span>Create Course</span>
+          </button>
+        </div>
       </div>
 
       {/* Filters */}
