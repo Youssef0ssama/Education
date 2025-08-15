@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { HelmetProvider } from 'react-helmet-async';
 import { LoginForm } from './components/auth';
 import { Router } from './components/shared';
 import './App.css';
@@ -6,6 +7,7 @@ import './App.css';
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showLogin, setShowLogin] = useState(false);
 
   useEffect(() => {
     // Check if user is already logged in
@@ -41,6 +43,11 @@ function App() {
 
   const handleLogin = (userData, userToken) => {
     setUser(userData);
+    setShowLogin(false);
+  };
+
+  const handleLoginClick = () => {
+    setShowLogin(true);
   };
 
   if (loading) {
@@ -54,12 +61,20 @@ function App() {
     );
   }
 
-  if (!user) {
-    return <LoginForm onLogin={handleLogin} />;
-  }
-
-  // All user roles now use their own themed layouts
-  return <Router user={user} />;
+  return (
+    <HelmetProvider>
+      <div className="App">
+        {showLogin ? (
+          <LoginForm onLogin={handleLogin} onClose={() => setShowLogin(false)} />
+        ) : (
+          <Router 
+            user={user} 
+            onLogin={handleLoginClick}
+          />
+        )}
+      </div>
+    </HelmetProvider>
+  );
 }
 
 export default App;

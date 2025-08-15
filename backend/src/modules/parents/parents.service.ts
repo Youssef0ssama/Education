@@ -34,25 +34,31 @@ export class ParentsService {
     //   relations: ['enrollments', 'enrollments.course'],
     // });
 
-    // For demo purposes, return mock children data
+    // For demo purposes, return mock children data with the structure frontend expects
     const children = [
       {
         id: 1,
-        name: 'Demo Child 1',
-        email: 'child1@demo.com',
+        name: 'Ahmad Al-Noor',
+        email: 'ahmad@demo.com',
         role: UserRole.STUDENT,
-        enrollments: [],
-        grades: [],
-        attendance: 95,
+        relationship_type: 'son',
+        enrolled_courses: 4,
+        avg_progress: 85,
+        attended_sessions: 38,
+        total_sessions: 40,
+        avg_grade_percentage: 87,
       },
       {
         id: 2,
-        name: 'Demo Child 2',
-        email: 'child2@demo.com',
+        name: 'Fatima Al-Noor',
+        email: 'fatima@demo.com',
         role: UserRole.STUDENT,
-        enrollments: [],
-        grades: [],
-        attendance: 88,
+        relationship_type: 'daughter',
+        enrolled_courses: 3,
+        avg_progress: 92,
+        attended_sessions: 35,
+        total_sessions: 36,
+        avg_grade_percentage: 94,
       },
     ];
 
@@ -168,66 +174,79 @@ export class ParentsService {
     // 2. Get the child's enrollments and progress
     // 3. Get grades, attendance, and completion rates
 
-    // For demo purposes, return mock progress data
+    // For demo purposes, return mock progress data with the structure frontend expects
+    const childName = childId === 1 ? 'Ahmad Al-Noor' : 'Fatima Al-Noor';
+    const childEmail = childId === 1 ? 'ahmad@demo.com' : 'fatima@demo.com';
+
     const progress = {
-      child: {
-        id: childId,
-        name: `Demo Child ${childId}`,
-        email: `child${childId}@demo.com`,
-      },
-      overall: {
-        gpa: 3.7,
-        attendance: 92,
-        completionRate: 85,
-        totalCourses: 4,
-        activeCourses: 3,
-      },
       courses: [
         {
           id: 1,
-          title: 'Mathematics 101',
-          instructor: 'Jane Teacher',
-          grade: 'A-',
-          progress: 78,
-          attendance: 95,
-          assignments: {
-            completed: 8,
-            total: 10,
-            averageGrade: 87,
-          },
+          title: 'Quran Memorization - Juz 1',
+          instructor_name: 'Sheikh Abdullah',
+          progress_percentage: 78,
+          attended_sessions: 19,
+          total_sessions: 20,
+          graded_assignments: 8,
+          total_assignments: 10,
+          avg_grade_percentage: 87,
         },
         {
           id: 2,
-          title: 'Science 101',
-          instructor: 'John Teacher',
-          grade: 'B+',
-          progress: 82,
-          attendance: 88,
-          assignments: {
-            completed: 6,
-            total: 8,
-            averageGrade: 84,
-          },
+          title: 'Arabic Language Basics',
+          instructor_name: 'Ustadha Aisha',
+          progress_percentage: 82,
+          attended_sessions: 17,
+          total_sessions: 18,
+          graded_assignments: 6,
+          total_assignments: 8,
+          avg_grade_percentage: 84,
+        },
+        {
+          id: 3,
+          title: 'Islamic Studies',
+          instructor_name: 'Sheikh Omar',
+          progress_percentage: 90,
+          attended_sessions: 15,
+          total_sessions: 15,
+          graded_assignments: 5,
+          total_assignments: 6,
+          avg_grade_percentage: 92,
         },
       ],
       recentGrades: [
         {
           id: 1,
-          assignment: 'Math Homework #8',
-          course: 'Mathematics 101',
-          grade: 'A-',
-          points: 87,
-          maxPoints: 100,
-          gradedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+          assignment_title: 'Quran Recitation Test - Surah Al-Baqarah',
+          course_title: 'Quran Memorization - Juz 1',
+          assignment_type: 'Recitation',
+          grade: 87,
+          max_points: 100,
+          feedback: 'Excellent memorization and tajweed. Keep practicing the pronunciation of some verses.',
+          graded_by_name: 'Sheikh Abdullah',
+          graded_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
         },
         {
           id: 2,
-          assignment: 'Science Lab Report #3',
-          course: 'Science 101',
-          grade: 'B+',
-          points: 84,
-          maxPoints: 100,
-          gradedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+          assignment_title: 'Arabic Grammar Exercise - Verb Conjugation',
+          course_title: 'Arabic Language Basics',
+          assignment_type: 'Written Assignment',
+          grade: 84,
+          max_points: 100,
+          feedback: 'Good understanding of verb patterns. Review the irregular verbs for better accuracy.',
+          graded_by_name: 'Ustadha Aisha',
+          graded_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+        },
+        {
+          id: 3,
+          assignment_title: 'Islamic History Quiz - The Rightly Guided Caliphs',
+          course_title: 'Islamic Studies',
+          assignment_type: 'Quiz',
+          grade: 92,
+          max_points: 100,
+          feedback: 'Excellent knowledge of Islamic history. Well done!',
+          graded_by_name: 'Sheikh Omar',
+          graded_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
         },
       ],
       attendanceSummary: [
@@ -245,20 +264,6 @@ export class ParentsService {
           status: 'late',
           count: 1,
           percentage: 2,
-        },
-      ],
-      recentActivity: [
-        {
-          type: 'assignment_submitted',
-          course: 'Mathematics 101',
-          description: 'Submitted homework assignment #8',
-          date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
-        },
-        {
-          type: 'grade_received',
-          course: 'Science 101',
-          description: 'Received grade for Lab Report #3: B+',
-          date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
         },
       ],
     };

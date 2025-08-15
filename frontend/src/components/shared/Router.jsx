@@ -2,8 +2,14 @@ import { StudentMain } from '../student';
 import { TeacherMain } from '../teacher';
 import { ParentMain } from '../parent';
 import { AdminMain } from '../admin';
+import HomePage from '../home/HomePage';
 
-const Router = ({ user }) => {
+const Router = ({ user, onLogin, onRegister, onDemo }) => {
+  // Show HomePage if user is not logged in
+  if (!user) {
+    return <HomePage onLoginClick={onLogin} />;
+  }
+
   // All user roles now use their own main components with consistent theming
   const handleLogout = () => {
     localStorage.removeItem('token');

@@ -28,19 +28,25 @@ const AdminMain = ({ user, onLogout }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <h1 className="text-xl font-bold text-gray-900">EduManage</h1>
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-blue-600 rounded-lg flex items-center justify-center">
+                  <span className="text-white text-xl font-bold">ب</span>
+                </div>
+                <div>
+                  <h1 className="text-xl font-bold text-gray-900">براعم النور</h1>
+                  <p className="text-xs text-gray-600">Baraem Al-Noor</p>
+                </div>
               </div>
             </div>
             
             <div className="flex items-center space-x-4">
-              <button className="p-2 text-gray-400 hover:text-gray-600">
+              <button className="p-2 text-gray-400 hover:text-green-600">
                 <Bell className="h-5 w-5" />
               </button>
               
               <div className="flex items-center space-x-3">
                 <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
                     <Shield className="h-4 w-4 text-white" />
                   </div>
                   <div className="hidden md:block">
@@ -51,7 +57,7 @@ const AdminMain = ({ user, onLogout }) => {
                 
                 <button
                   onClick={onLogout}
-                  className="p-2 text-gray-400 hover:text-gray-600"
+                  className="p-2 text-gray-400 hover:text-green-600"
                   title="Logout"
                 >
                   <LogOut className="h-5 w-5" />
@@ -76,7 +82,7 @@ const AdminMain = ({ user, onLogout }) => {
                       onClick={() => setActiveTab(item.id)}
                       className={`w-full flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                         activeTab === item.id
-                          ? 'bg-red-100 text-red-700 border border-red-200'
+                          ? 'bg-green-100 text-green-700 border border-green-200'
                           : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
                       }`}
                     >
@@ -237,13 +243,13 @@ const SystemSettings = ({ user }) => {
               <label className="block text-sm font-medium text-gray-700">System Name</label>
               <input
                 type="text"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500"
-                defaultValue="EduManage"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+                defaultValue="Baraem Al-Noor"
               />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">Time Zone</label>
-              <select className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500">
+              <select className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
                 <option>UTC-5 (Eastern Time)</option>
                 <option>UTC-8 (Pacific Time)</option>
                 <option>UTC+0 (GMT)</option>

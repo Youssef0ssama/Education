@@ -25,19 +25,25 @@ const ParentMain = ({ user, onLogout }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <h1 className="text-xl font-bold text-gray-900">EduManage</h1>
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-blue-600 rounded-lg flex items-center justify-center">
+                  <span className="text-white text-xl font-bold">ب</span>
+                </div>
+                <div>
+                  <h1 className="text-xl font-bold text-gray-900">براعم النور</h1>
+                  <p className="text-xs text-gray-600">Baraem Al-Noor</p>
+                </div>
               </div>
             </div>
             
             <div className="flex items-center space-x-4">
-              <button className="p-2 text-gray-400 hover:text-gray-600">
+              <button className="p-2 text-gray-400 hover:text-green-600">
                 <Bell className="h-5 w-5" />
               </button>
               
               <div className="flex items-center space-x-3">
                 <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
                     <User className="h-4 w-4 text-white" />
                   </div>
                   <div className="hidden md:block">
@@ -48,7 +54,7 @@ const ParentMain = ({ user, onLogout }) => {
                 
                 <button
                   onClick={onLogout}
-                  className="p-2 text-gray-400 hover:text-gray-600"
+                  className="p-2 text-gray-400 hover:text-green-600"
                   title="Logout"
                 >
                   <LogOut className="h-5 w-5" />
@@ -73,7 +79,7 @@ const ParentMain = ({ user, onLogout }) => {
                       onClick={() => setActiveTab(item.id)}
                       className={`w-full flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                         activeTab === item.id
-                          ? 'bg-green-100 text-green-700 border border-green-200'
+                          ? 'bg-blue-100 text-blue-700 border border-blue-200'
                           : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
                       }`}
                     >

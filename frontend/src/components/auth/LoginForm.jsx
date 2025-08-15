@@ -56,12 +56,15 @@ const LoginForm = ({ onLogin, onRegister }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8">
         <div className="text-center mb-8">
-          <div className="text-4xl mb-4">🎓</div>
-          <h1 className="text-2xl font-bold text-gray-900">Education Platform</h1>
-          <p className="text-gray-600 mt-2">
+          <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-blue-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+            <span className="text-white text-2xl font-bold">ب</span>
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900">براعم النور</h1>
+          <p className="text-sm text-gray-600 mb-2">Baraem Al-Noor</p>
+          <p className="text-gray-600">
             {isLogin ? 'Sign in to your account' : 'Create your account'}
           </p>
         </div>
@@ -85,7 +88,7 @@ const LoginForm = ({ onLogin, onRegister }) => {
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   placeholder="Enter your full name"
                   required={!isLogin}
                 />
@@ -104,7 +107,7 @@ const LoginForm = ({ onLogin, onRegister }) => {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 placeholder="Enter your email"
                 required
               />
@@ -122,7 +125,7 @@ const LoginForm = ({ onLogin, onRegister }) => {
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
-                className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 placeholder="Enter your password"
                 required
               />
@@ -146,7 +149,7 @@ const LoginForm = ({ onLogin, onRegister }) => {
                   name="role"
                   value={formData.role}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 >
                   <option value="student">Student</option>
                   <option value="teacher">Teacher</option>
@@ -163,7 +166,7 @@ const LoginForm = ({ onLogin, onRegister }) => {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   placeholder="Enter your phone number"
                 />
               </div>
@@ -173,7 +176,7 @@ const LoginForm = ({ onLogin, onRegister }) => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {loading ? 'Please wait...' : (isLogin ? 'Sign In' : 'Create Account')}
           </button>
@@ -192,7 +195,7 @@ const LoginForm = ({ onLogin, onRegister }) => {
                 phone: ''
               });
             }}
-            className="text-blue-600 hover:text-blue-800 text-sm"
+            className="text-green-600 hover:text-green-800 text-sm"
           >
             {isLogin 
               ? "Don't have an account? Sign up" 
@@ -202,9 +205,9 @@ const LoginForm = ({ onLogin, onRegister }) => {
         </div>
 
         {isLogin && (
-          <div className="mt-4 p-3 bg-blue-50 rounded-md">
-            <p className="text-sm text-blue-800 font-medium">Demo Accounts:</p>
-            <div className="text-xs text-blue-700 mt-1 space-y-1">
+          <div className="mt-4 p-3 bg-green-50 rounded-md">
+            <p className="text-sm text-green-800 font-medium">Demo Accounts:</p>
+            <div className="text-xs text-green-700 mt-1 space-y-1">
               <div>Admin: admin@education.com</div>
               <div>Teacher: jane.teacher@education.com</div>
               <div>Student: john.student@education.com</div>
